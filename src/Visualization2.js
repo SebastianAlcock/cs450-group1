@@ -12,7 +12,7 @@ class Visualization2 extends Component {
   };
 
   createVisualization = (data) => {
-    console.log(data)
+    //console.log(data)
   }
   
   render() {
