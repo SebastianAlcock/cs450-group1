@@ -228,22 +228,24 @@ class Visualization3 extends Component {
   
   render() {
     return (
-      <div>
-        <label>Filter: </label>
-        <select
-          value={this.state.selectedFilter}
-          onChange={(e) => this.setState({ selectedFilter: e.target.value })}>
-          <option value="All">All</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Insomnia">Insomnia</option>
-          <option value="Sleep Apnea">Sleep Apnea</option>
-          <option value="None">No Disorder</option>
-        </select>
+      <div style={{ position: 'relative' }}>
         <svg className="Visualization3">
             <g className="inner_chart"></g>
             <g className="legend"></g>
         </svg>
+        <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
+          <label>Filter: </label>
+          <select
+            value={this.state.selectedFilter}
+            onChange={(e) => this.setState({ selectedFilter: e.target.value })}>
+            <option value="All">All</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Insomnia">Insomnia</option>
+            <option value="Sleep Apnea">Sleep Apnea</option>
+            <option value="None">No Disorder</option>
+          </select>
+        </div>
       </div>
     );
   }
