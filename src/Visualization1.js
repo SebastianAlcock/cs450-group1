@@ -52,11 +52,9 @@ class Visualization1 extends Component {
 
     const uniqueOccupationsOrdered = [...new Set(processed_data.map((d) => d.occupation))].reverse();
   
-    console.log(processed_data)
-  
     const margin = { top: 40, right: 150, bottom: 50, left: 60 };
-    const width = 1000;
-    const height = 400;
+    const width = 800;
+    const height = 320;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
   
@@ -72,7 +70,15 @@ class Visualization1 extends Component {
     var lScale = d3.scaleBand().domain(colorList).range([0, innerHeight / 2]);
     var tScale = d3.scaleBand().domain(uniqueStressLevels).range([0, innerHeight / 2]);
 
-    const xAxis = d3.axisBottom(xScale);
+    const xAxis = d3.axisBottom(xScale).tickFormat(label => {
+      if (label.length > 11) {
+        console.log(label)
+        return `${label.slice(0,11)}.`;
+      } else {
+        console.log(label)
+        return `${label}`;
+      }
+    });
     const yAxis = d3.axisLeft(yScale);
   
     innerChart

@@ -1,5 +1,14 @@
 /* Make sure all css rules start with the class .visualization2 */
 
+.Visualization2 #controls {
+    margin-bottom: 20px;
+}
+  
+.Visualization2 svg {
+    background: white;
+}
+
 .Visualization2 {
-    
+    width: 800px;
+    height: 360px;
 }

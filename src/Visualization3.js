@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import * as d3 from 'd3';
+
 import './Styles/Visualization3.css';
 
 const parseBloodPressure = (d) => {
@@ -37,8 +38,8 @@ class Visualization3 extends Component {
 
     //--chart--
     const margin = { top: 40, right: 150, bottom: 40, left: 60 };
-    const width = 1000;
-    const height = 400;
+    const width = 800;
+    const height = 320;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     
@@ -221,19 +222,19 @@ class Visualization3 extends Component {
       .join('text')
       .attr('class', 'title-main')
       .attr('x', width / 2.2)
-      .attr('y', height - 370)
+      .attr('y', 20)
       .attr('text-anchor', 'middle')
       .text('Blood Pressure by Age');
   }
   
   render() {
     return (
-      <div style={{ position: 'relative' }}>
+      <div>
         <svg className="Visualization3">
             <g className="inner_chart"></g>
             <g className="legend"></g>
         </svg>
-        <div style={{ position: 'absolute', top: '10px', left: '10px' }}>
+        <div className='vis3Filter' style={{ position: 'absolute', top: '1100px', left: '680px' }}>
           <label>Filter: </label>
           <select
             value={this.state.selectedFilter}
