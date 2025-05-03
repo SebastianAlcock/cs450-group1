@@ -234,7 +234,7 @@ class Visualization3 extends Component {
             <g className="inner_chart"></g>
             <g className="legend"></g>
         </svg>
-        <div className='vis3Filter' style={{ position: 'absolute', top: '1100px', left: '680px' }}>
+        <div className='vis3Filter' style={{ position: 'absolute', top: '650px', left: '680px' }}>
           <label>Filter: </label>
           <select
             value={this.state.selectedFilter}

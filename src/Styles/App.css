@@ -5,3 +5,12 @@
     border: 1px solid black;
     margin: 10px;
 }
+
+.App-top {
+    display: flex;
+    flex-direction: column;
+}
+
+.App {
+    display: flex;
+}

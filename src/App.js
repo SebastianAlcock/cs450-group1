@@ -28,13 +28,15 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Visualization1
-          data={this.state.data}
-        />
+        <div className="App-top">
+          <Visualization1
+            data={this.state.data}
+          />
+          <Visualization3
+            data={this.state.data}
+          />
+        </div>
         <Visualization2
-          data={this.state.data}
-        />
-        <Visualization3
           data={this.state.data}
         />
       </div>

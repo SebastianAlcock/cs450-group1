@@ -71,9 +71,9 @@ class Visualization1 extends Component {
     var tScale = d3.scaleBand().domain(uniqueStressLevels).range([0, innerHeight / 2]);
 
     const xAxis = d3.axisBottom(xScale).tickFormat(label => {
-      if (label.length > 11) {
+      if (label.split(' ').length > 1) {
         console.log(label)
-        return `${label.slice(0,11)}.`;
+        return `${label.split(' ')[0]}`;
       } else {
         console.log(label)
         return `${label}`;

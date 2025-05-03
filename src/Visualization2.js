@@ -15,8 +15,8 @@ class Visualization2 extends Component {
   createVisualization = (rawData) => {
     if (!rawData || rawData.length === 0) return;
 
-    const width = 800;
-    const height = 320;
+    const width = 740;
+    const height = 640;
     const margin = { top: 40, right: 180, bottom: 80, left: 60 };
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -195,7 +195,9 @@ class Visualization2 extends Component {
   render() {
     return (
       <div className='Visualization2'>
-        Sleep Quality vs Physical Activity vs HeartRate
+        <div className='vis2title'>
+          Sleep Quality vs Physical Activity vs HeartRate
+        </div>
         <div id="controls">
           <label htmlFor="bmiSelect">Filter BMI Category: </label>
           <select id="bmiSelect"></select>

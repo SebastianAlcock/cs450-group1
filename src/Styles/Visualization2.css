@@ -1,14 +1,22 @@
 /* Make sure all css rules start with the class .visualization2 */
-
+/*
 .Visualization2 #controls {
     margin-bottom: 20px;
 }
-  
+*/
 .Visualization2 svg {
     background: white;
 }
 
 .Visualization2 {
-    width: 800px;
-    height: 360px;
+    width: max-content;
+    height: max-content;
+}
+
+label[for="activitySlider"] {
+    margin-left: 40px;
+}
+
+.vis2title {
+    margin-bottom: 17px;
 }
