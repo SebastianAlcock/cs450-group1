@@ -4,6 +4,8 @@ import * as d3 from 'd3';
 import './Styles/Visualization2.css';
 
 class Visualization2 extends Component {
+  dropdownPopulated = false;
+
   componentDidMount() {
     this.createVisualization(this.props.data);
   }
@@ -15,7 +17,7 @@ class Visualization2 extends Component {
   createVisualization = (rawData) => {
     if (!rawData || rawData.length === 0) return;
 
-    const width = 740;
+    const width = 760;
     const height = 640;
     const margin = { top: 40, right: 180, bottom: 80, left: 60 };
     const innerWidth = width - margin.left - margin.right;
@@ -26,7 +28,6 @@ class Visualization2 extends Component {
       .attr("height", height);
 
     svg.selectAll(".vis2-inner").remove();
-
     const g = svg.append("g")
       .attr("class", "vis2-inner")
       .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -51,12 +52,16 @@ class Visualization2 extends Component {
       d["SleepQuality"] = +d["SleepQuality"];
     });
 
-    const uniqueBMI = Array.from(new Set(data.map(d => d["BMICategory"])));
-    const bmiDropdown = d3.select("#bmiSelect");
-    bmiDropdown.selectAll("option").remove();
-    uniqueBMI.forEach(bmi => {
-      bmiDropdown.append("option").attr("value", bmi).text(bmi);
-    });
+    if (!this.dropdownPopulated) {
+      const uniqueBMI = Array.from(new Set(rawData.map(d => d["BMICategory"])));
+      const bmiDropdown = d3.select("#bmiSelect");
+      bmiDropdown.selectAll("option").remove();
+      bmiDropdown.append("option").attr("value", "All").text("All");
+      uniqueBMI.forEach(bmi => {
+        bmiDropdown.append("option").attr("value", bmi).text(bmi);
+      });
+      this.dropdownPopulated = true;
+    }
 
     xScale.domain([d3.min(data, d => d["PhysicalActivityLevel"]) * 0.9, d3.max(data, d => d["PhysicalActivityLevel"]) * 1.05]);
     yScale.domain([d3.min(data, d => d["HeartRate"]) * 0.96, d3.max(data, d => d["HeartRate"])]);
@@ -93,34 +98,35 @@ class Visualization2 extends Component {
       .style("font-size", "13px")
       .style("display", "none");
 
-    g.selectAll(".vis2-circle")
-      .data(data, d => d["Person ID"])
-      .join("circle")
-      .attr("class", "vis2-circle")
-      .attr("cx", d => xScale(d["PhysicalActivityLevel"]))
-      .attr("cy", d => yScale(d["HeartRate"]))
-      .attr("r", d => sizeScale(d["DailySteps"]))
-      .attr("fill", d => colorScale(d["SleepQuality"]))
-      .attr("opacity", 0.75)
-      .on("mouseover", function (event, d) {
-        tooltip.style("display", "block").html(`
-          <strong>${d.Occupation}</strong><br>
-          Sleep Quality: ${d["SleepQuality"]}<br>
-          Steps: ${d["DailySteps"]}<br>
-          BMI: ${d["BMICategory"]}
-        `);
-      })
-      .on("mousemove", function (event) {
-        tooltip
-          .style("left", (event.pageX + 15) + "px")
-          .style("top", (event.pageY - 25) + "px");
-      })
-      .on("mouseout", function () {
-        tooltip.style("display", "none");
-      });
+    const points = g.selectAll(".vis2-circle")
+      .data(data, d => d["Person ID"]);
+
+    points.join(
+      enter => enter.append("circle")
+        .attr("class", "vis2-circle")
+        .attr("cx", d => xScale(d["PhysicalActivityLevel"]))
+        .attr("cy", d => yScale(d["HeartRate"]))
+        .attr("r", d => sizeScale(d["DailySteps"]))
+        .attr("fill", d => colorScale(d["SleepQuality"]))
+        .attr("opacity", 0.75)
+        .on("mouseover", function (event, d) {
+          tooltip.style("display", "block").html(`
+            <strong>${d.Occupation}</strong><br>
+            Sleep Quality: ${d["SleepQuality"]}<br>
+            Steps: ${d["DailySteps"]}<br>
+            BMI: ${d["BMICategory"]}`);
+        })
+        .on("mousemove", function (event) {
+          tooltip
+            .style("left", (event.pageX + 15) + "px")
+            .style("top", (event.pageY - 25) + "px");
+        })
+        .on("mouseout", function () {
+          tooltip.style("display", "none");
+        })
+    );
 
     svg.selectAll(".legend-vis2").remove();
-
     const legend = svg.append("g")
       .attr("class", "legend-vis2")
       .attr("transform", `translate(${margin.left + innerWidth + 10},${margin.top})`);
@@ -160,7 +166,7 @@ class Visualization2 extends Component {
 
     d3.select("#bmiSelect").on("change", () => this.update());
     d3.select("#activitySlider").on("input", () => this.update());
-  }
+  };
 
   update() {
     if (!this.props || !this.props.data || this.props.data.length === 0) return;
@@ -185,7 +191,7 @@ class Visualization2 extends Component {
     });
 
     const filtered = data.filter(d =>
-      d["BMICategory"] === selectedBMI &&
+      (selectedBMI === "All" || d["BMICategory"] === selectedBMI) &&
       d["PhysicalActivityLevel"] <= activityMax
     );
 
@@ -196,14 +202,14 @@ class Visualization2 extends Component {
     return (
       <div className='Visualization2'>
         <div className='vis2title'>
-          Sleep Quality vs Physical Activity vs HeartRate
+        Sleep Quality vs Physical Activity vs HeartRate
         </div>
         <div id="controls">
           <label htmlFor="bmiSelect">Filter BMI Category: </label>
           <select id="bmiSelect"></select>
 
           <label htmlFor="activitySlider">Activity ≤ </label>
-          <input type="range" id="activitySlider" min="0" max="100" defaultValue="100" />
+          <input type="range" id="activitySlider" min="0" max="100" defaultValue="100"></input>
           <span id="activityValue">100</span>
         </div>
 
